@@ -63,3 +63,7 @@ runs:
       name: Run govulncheck and save to file
       run: govulncheck -C ${{ inputs.work-dir }} -format ${{ inputs.output-format }} ${{ inputs.go-package }} > ${{ inputs.output-file }}
       shell: bash
+    - if: inputs.output-format == 'sarif'
+      name: Fix SARIF format
+      run: yq --inplace --output-format json '.runs |= map ({"results":[]} + .)' ${{ inputs.output-file }}
+      shell: bash
