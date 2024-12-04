@@ -25,6 +25,10 @@ inputs:
     description: "Checkout the repository"
     required: false
     default: true
+  setup-go:
+    description: "Setup go"
+    required: false
+    default: true
   go-version-file:
     description: 'Path to the go.mod or go.work file.'
     required: false
@@ -41,7 +45,8 @@ runs:
   steps:
     - if: inputs.repo-checkout != 'false' # only explicit false prevents repo checkout
       uses: actions/checkout@v4.1.1
-    - uses: actions/setup-go@v5.0.0
+    - if: inputs.setup-go != 'false' # only explicit false prevents setting up go
+      uses: actions/setup-go@v5.0.0
       with:
         go-version: ${{ inputs.go-version-input }}
         check-latest: ${{ inputs.check-latest }}
