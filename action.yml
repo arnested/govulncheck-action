@@ -73,7 +73,7 @@ runs:
         GO_PACKAGE: ${{ inputs.go-package }}
     - if: inputs.output-file != ''
       name: Run govulncheck and save to file
-      run: govulncheck -C "$WORK_DIR" -format "$OUTPUT_FORMAT" "$GO_PACKAGE" > "$OUTPUT_FILE"
+      run: govulncheck -C "$WORK_DIR" -format "$OUTPUT_FORMAT" "$GO_PACKAGE" | jq '(.runs[].tool.driver.rules[]?.properties.tags)? |= unique'  > "$OUTPUT_FILE"
       shell: bash
       env:
         WORK_DIR: ${{ inputs.work-dir }}
