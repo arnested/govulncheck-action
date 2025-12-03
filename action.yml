@@ -66,5 +66,5 @@ runs:
       shell: bash
     - if: inputs.output-file != ''
       name: Run govulncheck and save to file
-      run: govulncheck -C ${{ inputs.work-dir }} -format ${{ inputs.output-format }} ${{ inputs.go-package }} > ${{ inputs.output-file }}
+      run: govulncheck -C ${{ inputs.work-dir }} -format ${{ inputs.output-format }} ${{ inputs.go-package }} | jq '(.runs[].tool.driver.rules[]?.properties.tags)? |= unique' > ${{ inputs.output-file }}
       shell: bash
