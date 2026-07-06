@@ -60,9 +60,18 @@ runs:
         GOARCH: ''
     - if: inputs.output-file == ''
       name: Run govulncheck
-      run: govulncheck -C ${{ inputs.work-dir }} -format ${{ inputs.output-format }} ${{ inputs.go-package }}
+      run: govulncheck -C "$WORK_DIR" -format "$OUTPUT_FORMAT" "$GO_PACKAGE"
       shell: bash
+      env:
+        WORK_DIR: ${{ inputs.work-dir }}
+        OUTPUT_FORMAT: ${{ inputs.output-format }}
+        GO_PACKAGE: ${{ inputs.go-package }}
     - if: inputs.output-file != ''
       name: Run govulncheck and save to file
-      run: govulncheck -C ${{ inputs.work-dir }} -format ${{ inputs.output-format }} ${{ inputs.go-package }} > ${{ inputs.output-file }}
+      run: govulncheck -C "$WORK_DIR" -format "$OUTPUT_FORMAT" "$GO_PACKAGE" > "$OUTPUT_FILE"
       shell: bash
+      env:
+        WORK_DIR: ${{ inputs.work-dir }}
+        OUTPUT_FORMAT: ${{ inputs.output-format }}
+        GO_PACKAGE: ${{ inputs.go-package }}
+        OUTPUT_FILE: ${{ inputs.output-file }}
